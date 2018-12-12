@@ -1,5 +1,6 @@
 package source.kevtimov.landlordcommunicationapp.utils.receiver;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,22 +17,23 @@ import source.kevtimov.landlordcommunicationapp.views.login.myplaces.MyPlacesAct
 public class ReceiverNotification extends BroadcastReceiver {
 
     private NotificationManagerCompat mManager;
+    private Notification mNotification;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         mManager = NotificationManagerCompat.from(context);
 
-        Intent intentToMyPlaces = new Intent(context, MyPlacesActivity.class);
-        intentToMyPlaces.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent navigateToMyPlaces = new Intent(context, MyPlacesActivity.class);
+        navigateToMyPlaces.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         String total = String.valueOf(intent.getDoubleExtra("TotalAmount", 0));
         String remain = String.valueOf(intent.getDoubleExtra("RemainingAmount", 0));
         int rentId = intent.getIntExtra("RentId", 0);
         String date = intent.getStringExtra("DueDate");
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 595, intentToMyPlaces, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 595, navigateToMyPlaces, 0);
 
-        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
+        mNotification = new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.rent_day)
                 .setContentTitle("RENT!")
@@ -39,8 +41,9 @@ public class ReceiverNotification extends BroadcastReceiver {
                         .bigText("You have 5 days till rent due date!\n" + "Due date: " + date + "\n" + "Total amount: " + total + "\n" +
                         "Remain: " + remain + "\n"))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .build();
 
-        Objects.requireNonNull(mManager).notify(rentId, notBuilder.build());
+        Objects.requireNonNull(mManager).notify(rentId, mNotification);
     }
 }

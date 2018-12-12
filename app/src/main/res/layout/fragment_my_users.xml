@@ -15,8 +15,8 @@
         android:layout_centerHorizontal="true"
         android:layout_height="100dp" />
 
-    <ListView
-        android:id="@+id/lv_users"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_users"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:divider="@null"

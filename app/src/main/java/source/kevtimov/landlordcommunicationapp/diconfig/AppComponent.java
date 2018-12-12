@@ -40,6 +40,9 @@ import source.kevtimov.landlordcommunicationapp.diconfig.modules.RentParserModul
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.RentRepositoryModule;
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.RentServiceModule;
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.RentValidatorModule;
+import source.kevtimov.landlordcommunicationapp.diconfig.modules.TemplateMessageRepositoryModule;
+import source.kevtimov.landlordcommunicationapp.diconfig.modules.TemplateMessageSQLiteModule;
+import source.kevtimov.landlordcommunicationapp.diconfig.modules.TemplateMessageServiceModule;
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.UserParserModule;
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.UserRepositoryModule;
 import source.kevtimov.landlordcommunicationapp.diconfig.modules.UserServiceModule;
@@ -47,6 +50,8 @@ import source.kevtimov.landlordcommunicationapp.diconfig.modules.UserValidatorMo
 
 @Singleton
 @Component(modules = {
+        TemplateMessageServiceModule.class,
+        TemplateMessageRepositoryModule.class,
         MessageServiceModule.class,
         MessageRepositoryModule.class,
         MessageParserModule.class,
@@ -80,6 +85,7 @@ import source.kevtimov.landlordcommunicationapp.diconfig.modules.UserValidatorMo
         AgentModule.class,
         UserRepositoryModule.class,
         UserParserModule.class,
+        TemplateMessageSQLiteModule.class,
         HttpModule.class,
         AsyncModule.class,
         ActivityBindingModule.class,

@@ -1,5 +1,6 @@
 package source.kevtimov.landlordcommunicationapp.chat.chatview;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 
 import java.text.DateFormat;
@@ -36,7 +37,7 @@ public class ChatPresenter implements ContractsChat.Presenter {
 
 
     @Inject
-    public ChatPresenter(SchedulerProvider schedulerProvider, MessageService messageService) {
+    ChatPresenter(SchedulerProvider schedulerProvider, MessageService messageService) {
         this.mSchedulerProvider = schedulerProvider;
         this.mMessageService = messageService;
         this.mCacher = BitmapCache.getInstance();
@@ -88,7 +89,7 @@ public class ChatPresenter implements ContractsChat.Presenter {
 
             }
 
-            public void viewMessages(List<Message> messages) {
+            void viewMessages(List<Message> messages) {
 
                 if (mView == null) {
                     mTimer.cancel();
@@ -99,7 +100,7 @@ public class ChatPresenter implements ContractsChat.Presenter {
                 }
             }
         };
-        mTimer.scheduleAtFixedRate(mTimerTask, 0, 3000);
+        mTimer.scheduleAtFixedRate(mTimerTask, 0, 1500);
     }
 
 
@@ -107,7 +108,7 @@ public class ChatPresenter implements ContractsChat.Presenter {
     public void createMessage(String msgContent) {
 
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String strDate = dateFormat.format(date);
         Message message = new Message(strDate, msgContent, mLoggedInUser.getUserId(), mOtherUser.getUserId(), mCurrentSession);
 

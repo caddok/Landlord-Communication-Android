@@ -7,17 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 import source.kevtimov.landlordcommunicationapp.R;
 
@@ -28,11 +27,14 @@ public class TemplateMessageFragment extends Fragment implements ContractsTempla
     TextView mTextViewTemplateMessage;
 
     @BindView(R.id.lv_templ_messages)
-    ListView mListViewTemplMessages;
+    ListView mListViewTemplateMessages;
+
+    @BindView(R.id.et_add_message)
+    EditText mEditTextAdd;
 
     private ContractsTemplateMessage.Presenter mPresenter;
     private ContractsTemplateMessage.Navigator mNavigator;
-    private TemplateMessageAdapter mMessageAdapter;
+    private MyCursorAdapter mMessageAdapter;
 
     @Inject
     public TemplateMessageFragment() {
@@ -44,9 +46,9 @@ public class TemplateMessageFragment extends Fragment implements ContractsTempla
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_template_message, container, false);
         ButterKnife.bind(this, root);
-        mMessageAdapter = new TemplateMessageAdapter(getContext());
-        mListViewTemplMessages.setAdapter(mMessageAdapter);
-
+        mMessageAdapter = new MyCursorAdapter(getContext(),
+                mPresenter.loadTemplateMessages());
+        mListViewTemplateMessages.setAdapter(mMessageAdapter);
 
         return root;
     }
@@ -55,7 +57,6 @@ public class TemplateMessageFragment extends Fragment implements ContractsTempla
     public void onResume() {
         super.onResume();
         mPresenter.subscribe(this);
-        mPresenter.loadTemplateMessages();
     }
 
     @Override
@@ -65,14 +66,14 @@ public class TemplateMessageFragment extends Fragment implements ContractsTempla
     }
 
     @Override
-    public void setPresenter(ContractsTemplateMessage.Presenter presenter) {
-        this.mPresenter = presenter;
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.closeCursorAndDatabase();
     }
 
     @Override
-    public void showMessages(String message) {
-        mMessageAdapter.add(message);
-        mMessageAdapter.notifyDataSetChanged();
+    public void setPresenter(ContractsTemplateMessage.Presenter presenter) {
+        this.mPresenter = presenter;
     }
 
     @Override
@@ -90,5 +91,11 @@ public class TemplateMessageFragment extends Fragment implements ContractsTempla
         String templateMessage = mMessageAdapter.getItem(position);
 
         mPresenter.allowNavigationToChat(templateMessage);
+    }
+
+    @OnClick(R.id.btn_add)
+    public void onAddClick(View v){
+        String message = mEditTextAdd.getText().toString();
+        mPresenter.addTemplateMessage(message);
     }
 }

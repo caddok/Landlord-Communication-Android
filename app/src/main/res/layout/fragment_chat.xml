@@ -15,16 +15,15 @@
         android:layout_centerHorizontal="true"
         android:layout_height="170dp" />
 
-    <ListView
-        android:id="@+id/lv_users"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_users"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:divider="@null"
         android:layout_below="@+id/iv_chat"
-        android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:clickable="true"/>
 
     <com.emredavarci.circleprogressbar.CircleProgressBar
         android:id="@+id/progress_bar"

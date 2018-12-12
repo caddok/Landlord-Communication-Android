@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,20 +37,20 @@ import source.kevtimov.landlordcommunicationapp.R;
 import source.kevtimov.landlordcommunicationapp.models.Payment;
 import source.kevtimov.landlordcommunicationapp.utils.Constants;
 
-public class MyPaymentsFragment extends Fragment implements ContractsMyPayments.View {
+public class MyPaymentsFragment extends Fragment implements ContractsMyPayments.View, RecyclerViewMyPaymentsAdapter.OnPaymentClickListener {
 
     @BindView(R.id.iv_payment)
     ImageView mImageViewMoney;
 
-    @BindView(R.id.lv_payments)
-    ListView mListViewPayments;
+    @BindView(R.id.rv_payments)
+    RecyclerView mRecViewPayments;
 
     @BindView(R.id.progressBar)
     CircleProgressBar mProgressBar;
 
 
     private ContractsMyPayments.Presenter mPresenter;
-    private MyPaymentsAdapter mPaymentAdapter;
+    private RecyclerViewMyPaymentsAdapter mPaymentAdapter;
     private AlertDialog mDialog;
 
 
@@ -64,9 +66,10 @@ public class MyPaymentsFragment extends Fragment implements ContractsMyPayments.
         View root = inflater.inflate(R.layout.fragment_my_payments, container, false);
         ButterKnife.bind(this, root);
 
-        mPaymentAdapter = new MyPaymentsAdapter(Objects.requireNonNull(getContext()));
-        mListViewPayments.setAdapter(mPaymentAdapter);
-
+        mPaymentAdapter = new RecyclerViewMyPaymentsAdapter(getContext());
+        mRecViewPayments.setAdapter(mPaymentAdapter);
+        mRecViewPayments.setLayoutManager(new LinearLayoutManager(getContext()));
+        mPaymentAdapter.setOnPaymentClickListener(this);
 
         return root;
     }
@@ -118,13 +121,6 @@ public class MyPaymentsFragment extends Fragment implements ContractsMyPayments.
                 Toast.LENGTH_LONG, R.style.reject_login_toast).show();
     }
 
-    @OnItemClick(R.id.lv_payments)
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Payment payment = mPaymentAdapter.getItem(position);
-
-        showInfoDialog(Objects.requireNonNull(payment));
-    }
-
     private void showInfoDialog(Payment payment) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -143,5 +139,12 @@ public class MyPaymentsFragment extends Fragment implements ContractsMyPayments.
                 .show();
 
          mDialog = builder.create();
+    }
+
+    @Override
+    public void onPaymentClick(int position) {
+        Payment payment = mPaymentAdapter.getItem(position);
+
+        showInfoDialog(Objects.requireNonNull(payment));
     }
 }

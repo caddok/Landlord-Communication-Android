@@ -3,12 +3,11 @@ package source.kevtimov.landlordcommunicationapp.chat.sessions;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.emredavarci.circleprogressbar.CircleProgressBar;
@@ -21,26 +20,24 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import source.kevtimov.landlordcommunicationapp.R;
 import source.kevtimov.landlordcommunicationapp.models.ChatSession;
 import source.kevtimov.landlordcommunicationapp.models.User;
 import source.kevtimov.landlordcommunicationapp.utils.Constants;
-import source.kevtimov.landlordcommunicationapp.views.login.myusers.UsersAdapter;
 
-public class ChatSessionFragment extends Fragment implements ContractsChatSession.View{
+public class ChatSessionFragment extends Fragment implements ContractsChatSession.View, RecyclerViewChatAdapter.OnChatClickListener {
 
 
-    @BindView(R.id.lv_users)
-    ListView mListViewChats;
+    @BindView(R.id.rv_users)
+    RecyclerView mRecViewChats;
 
     @BindView(R.id.progress_bar)
     CircleProgressBar mProgressBar;
 
     private ContractsChatSession.Presenter mPresenter;
     private ContractsChatSession.Navigator mNavigator;
-    private ChatUsersAdapter mChatAdapter;
-    private List<User> users;
+    private RecyclerViewChatAdapter mChatAdapter;
+    private List<User> mUsers;
 
 
     @Inject
@@ -55,10 +52,12 @@ public class ChatSessionFragment extends Fragment implements ContractsChatSessio
         View root =  inflater.inflate(R.layout.fragment_chat, container, false);
         ButterKnife.bind(this, root);
 
-        users = new ArrayList<>();
+        mUsers = new ArrayList<>();
 
-        mChatAdapter = new ChatUsersAdapter(getContext());
-        mListViewChats.setAdapter(mChatAdapter);
+        mChatAdapter = new RecyclerViewChatAdapter(getContext(), mUsers);
+        mRecViewChats.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecViewChats.setAdapter(mChatAdapter);
+        mChatAdapter.setOnChatClickListener(this);
 
         return root;
     }
@@ -68,7 +67,7 @@ public class ChatSessionFragment extends Fragment implements ContractsChatSessio
     public void onResume() {
         super.onResume();
         mPresenter.subscribe(this);
-        mChatAdapter.clear();
+        mUsers.clear();
         mPresenter.loadUsers();
     }
 
@@ -106,9 +105,9 @@ public class ChatSessionFragment extends Fragment implements ContractsChatSessio
 
     @Override
     public void addUser(User user) {
-        if(!users.contains(user)){
-            users.add(user);
-            mChatAdapter.add(user);
+        if(!mUsers.contains(user)){
+            mUsers.add(user);
+            mChatAdapter.notifyDataSetChanged();
         }
     }
 
@@ -123,11 +122,9 @@ public class ChatSessionFragment extends Fragment implements ContractsChatSessio
         mNavigator.navigateToMessageView(chat, other);
     }
 
-
-    @OnItemClick(R.id.lv_users)
-    public void onUserClick(AdapterView<?> parent, View view, int position, long id){
+    @Override
+    public void onChatClick(int position) {
         User user = mChatAdapter.getItem(position);
-
         mPresenter.checkForChatSession(user);
     }
 }

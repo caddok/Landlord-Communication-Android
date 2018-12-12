@@ -94,6 +94,9 @@
             android:label="@string/app_name" />
 
         <receiver android:name=".utils.receiver.ReceiverNotification" />
+        <service android:name=".utils.androidservices.MyNotificationService"
+            android:exported="false"
+            android:enabled="true"/>
 
         <activity
             android:name=".chat.sessions.ChatSessionActivity"
@@ -105,7 +108,7 @@
             android:label="@string/app_name"
             android:theme="@style/Base.AlertDialog.AppCompat"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".chat.templatemessage.TemplateMessageActivity"></activity>
+        <activity android:name=".chat.templatemessage.TemplateMessageActivity" />
     </application>
 
 </manifest>

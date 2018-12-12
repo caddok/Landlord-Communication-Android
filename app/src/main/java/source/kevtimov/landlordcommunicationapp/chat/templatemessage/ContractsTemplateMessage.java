@@ -1,13 +1,13 @@
 package source.kevtimov.landlordcommunicationapp.chat.templatemessage;
 
 
+import android.database.Cursor;
+
 public interface ContractsTemplateMessage {
 
     interface View {
 
         void setPresenter(ContractsTemplateMessage.Presenter presenter);
-
-        void showMessages(String message);
 
         void navigateToChat(String message);
 
@@ -23,7 +23,11 @@ public interface ContractsTemplateMessage {
 
         void allowNavigationToChat(String message);
 
-        void loadTemplateMessages();
+        Cursor loadTemplateMessages();
+
+        void addTemplateMessage(String message);
+
+        void closeCursorAndDatabase();
     }
 
     interface Navigator{

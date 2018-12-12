@@ -17,8 +17,8 @@
         android:scaleType="fitXY"
         android:src="@drawable/money" />
 
-    <ListView
-        android:id="@+id/lv_payments"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_payments"
         android:layout_below="@+id/iv_payment"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"

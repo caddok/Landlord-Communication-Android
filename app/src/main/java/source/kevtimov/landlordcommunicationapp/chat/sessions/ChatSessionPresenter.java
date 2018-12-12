@@ -1,5 +1,7 @@
 package source.kevtimov.landlordcommunicationapp.chat.sessions;
 
+import android.annotation.SuppressLint;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -129,7 +131,7 @@ public class ChatSessionPresenter implements ContractsChatSession.Presenter {
         if(chatSessions.isEmpty()){
 
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = dateFormat.format(date);
 
             ChatSession  chatSession = new ChatSession(strDate, tenant.getUserId(), mUser.getUserId());

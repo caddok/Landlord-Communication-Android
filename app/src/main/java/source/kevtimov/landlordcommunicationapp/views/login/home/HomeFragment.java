@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment implements ContractsHome.View {
     private ContractsHome.Presenter mPresenter;
     private ContractsHome.Navigator mNavigator;
     private Calendar mCalendar;
-    private AlarmManager mAlarmManager;
+//    private AlarmManager mAlarmManager;
 
     @Inject
     public HomeFragment() {
@@ -89,24 +89,14 @@ public class HomeFragment extends Fragment implements ContractsHome.View {
         mCalendar.set(Calendar.YEAR, 2018);
         mCalendar.set(Calendar.MONTH, month - 1);
         mCalendar.set(Calendar.DAY_OF_MONTH, day);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 13);
-        mCalendar.set(Calendar.MINUTE, 59);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 19);
+        mCalendar.set(Calendar.MINUTE, 55);
         mCalendar.set(Calendar.SECOND, 0);
 
 
         if (mCalendar.getTimeInMillis() > System.currentTimeMillis()) {
-            Intent intent = new Intent(getContext(), ReceiverNotification.class);
-            intent.putExtra("TotalAmount", rent.getTotalAmount());
-            intent.putExtra("RemainingAmount", rent.getRemainingAmount());
-            intent.putExtra("DueDate", rent.getDueDate());
-            intent.putExtra("RentId", rent.getRentID());
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), rent.getRentID(), intent, 0);
-
-            mAlarmManager = (AlarmManager) Objects.requireNonNull(getContext()).getSystemService(Context.ALARM_SERVICE);
-
-            Objects.requireNonNull(mAlarmManager).setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+            mNavigator.sendNotification(rent, mCalendar);
         }
     }
 

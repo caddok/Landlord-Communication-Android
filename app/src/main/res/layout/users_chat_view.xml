@@ -1,54 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
+    android:paddingLeft="5dp"
+    android:paddingBottom="15dp"
+    android:paddingRight="5dp"
+    android:background="?android:attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="7dp"
     android:descendantFocusability="beforeDescendants">
 
-    <RelativeLayout
-        android:orientation="vertical"
-        android:id="@+id/relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingRight="5dp"
-        android:background="@android:color/transparent"
-        android:descendantFocusability="afterDescendants">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/iv_user"
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="20dip"
+        app:riv_oval="true"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/iv_user"
-            android:src="@drawable/com_facebook_profile_picture_blank_portrait"
-            android:scaleType="fitCenter"
-            app:riv_corner_radius="20dip"
-            app:riv_oval="true"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_first_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_user"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="20dp"
+        android:textSize="16sp"
+        android:layout_toEndOf="@+id/iv_user"
+        android:text="@string/first_name" />
 
-        <TextView
-            android:id="@+id/tv_first_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/iv_user"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            android:textSize="14sp"
-            android:layout_toEndOf="@+id/iv_user"
-            android:text="@string/first_name" />
-
-        <TextView
-            android:id="@+id/tv_last_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_below="@+id/tv_first_name"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="4dp"
-            android:layout_toEndOf="@+id/iv_user"
-            android:text="@string/last_name" />
-
-
-    </RelativeLayout>
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_below="@+id/tv_first_name"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:layout_toEndOf="@+id/iv_user"
+        android:text="@string/last_name" />
+</RelativeLayout>

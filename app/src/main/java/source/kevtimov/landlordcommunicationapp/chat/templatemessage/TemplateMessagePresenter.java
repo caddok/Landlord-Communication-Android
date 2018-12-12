@@ -1,20 +1,19 @@
 package source.kevtimov.landlordcommunicationapp.chat.templatemessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.database.Cursor;
 
 import javax.inject.Inject;
 
-import source.kevtimov.landlordcommunicationapp.utils.Constants;
+import source.kevtimov.landlordcommunicationapp.services.base.TemplateMessageService;
 
 public class TemplateMessagePresenter implements ContractsTemplateMessage.Presenter {
 
     private ContractsTemplateMessage.View mView;
-    private List<String> mTemplateMessages;
+    private TemplateMessageService mTemplateMessageService;
 
     @Inject
-    public TemplateMessagePresenter(){
-        this.mTemplateMessages = new ArrayList<>();
+    public TemplateMessagePresenter(TemplateMessageService service){
+        this.mTemplateMessageService = service;
     }
 
     @Override
@@ -33,21 +32,17 @@ public class TemplateMessagePresenter implements ContractsTemplateMessage.Presen
     }
 
     @Override
-    public void loadTemplateMessages() {
-        mTemplateMessages.clear();
-        mTemplateMessages.add(Constants.RUNNING_A_FEW_MINUTES_LATE);
-        mTemplateMessages.add(Constants.SOUNDS_GOOD_TEMPL_MESSAGE);
-        mTemplateMessages.add(Constants.WONT_BE_ABLE_TO_MAKE_IT);
-        mTemplateMessages.add(Constants.I_WILL_BE_THERE_IN_5_MINS);
-        mTemplateMessages.add(Constants.IN_MEETING_AT_THE_MOMENT);
-        mTemplateMessages.add(Constants.PLEASE_CALL_ME);
-        mTemplateMessages.add(Constants.THANK_YOU_FOR_EVERYTHING);
-        mTemplateMessages.add(Constants.MEET_ME_IN_THE_APARTMENT);
-        mTemplateMessages.add(Constants.DIFFICULT_TO_TALK);
-        mTemplateMessages.add(Constants.THAT_SOUNDS_AWESOME);
+    public Cursor loadTemplateMessages() {
+        return mTemplateMessageService.getAllTemplateMessages();
+    }
 
-        for (String message:mTemplateMessages) {
-            mView.showMessages(message);
-        }
+    @Override
+    public void addTemplateMessage(String message) {
+        mTemplateMessageService.addTemplateMessage(message);
+    }
+
+    @Override
+    public void closeCursorAndDatabase() {
+        mTemplateMessageService.closeCursorAndDatabase();
     }
 }

@@ -1,5 +1,7 @@
 package source.kevtimov.landlordcommunicationapp.views.login.home;
 
+import java.util.Calendar;
+
 import source.kevtimov.landlordcommunicationapp.models.Rent;
 import source.kevtimov.landlordcommunicationapp.models.User;
 
@@ -56,6 +58,8 @@ public interface ContractsHome {
         void navigateToUsers();
 
         void navigateToPlaces();
+
+        void sendNotification(Rent rent, Calendar mCalendar);
 
     }
 
